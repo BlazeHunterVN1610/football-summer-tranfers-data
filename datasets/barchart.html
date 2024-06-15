@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfer Balance Between Countries</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .chart-container {
+            width: 100%;
+            margin: auto;
+            padding-top: 20px;
+            overflow-x: scroll;
+        }
+        .axis path,
+        .axis line {
+            fill: none;
+            shape-rendering: crispEdges;
+        }
+        .axis text {
+            font: 12px Arial;
+        }
+        .legend rect {
+            stroke-width: 2;
+        }
+        .slider-container {
+            text-align: center;
+            margin-top: 20px;
+            width: 100%;
+        }
+        #chartSlider {
+            width: 60%;
+        }
+        .slider-labels {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .slider-labels span {
+            cursor: pointer;
+        }
+        .active {
+            font-weight: bold;
+            text-decoration: underline;
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <svg id="barChart" width="1400" height="700"></svg>
+    </div>
+
+    <div class="slider-container">
+        <label for="chartSlider" id="sliderLabel">Balance = Spend</label>
+        <br>
+        <input type="range" id="chartSlider" min="1" max="3" value="1" step="1">
+        <div class="slider-labels">
+            <span id="labelSpend">Spend</span>
+            <span id="labelIncome">Income</span>
+            <span id="labelNetSpend">Net Spend</span>
+        </div>
+    </div>
+
+    <!-- Include D3.js from a CDN -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script type="text/javascript" src="barchart.js"></script>
+</body>
+</html>
