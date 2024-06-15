@@ -70,6 +70,37 @@ d3.csv(csvUrl).then(data => {
     // Combine all datasets into an array for easy access
     const datasets = [countryToData, countryFromData, transferBalanceData];
 
+    // Define a color scale for the bars
+    const color = d3.scaleOrdinal()
+        .domain(selectedCountries)
+        .range(d3.schemeCategory10.slice(0, selectedCountries.length));
+
+    // Initialize the legend once
+    const legendGroup = svg.append("g")
+        .attr("class", "legend-group")
+        .attr("transform", `translate(${width + 20}, 0)`);
+
+    const legend = legendGroup.selectAll(".legend")
+        .data(selectedCountries)
+        .enter()
+        .append("g")
+        .attr("class", "legend")
+        .attr("transform", (d, i) => `translate(0,${i * 30})`);
+
+    legend.append("rect")
+        .attr("width", 20)
+        .attr("height", 20)
+        .style("fill", d => color(d))
+        .style("stroke", "black");
+
+    legend.append("text")
+        .attr("x", 30)
+        .attr("y", 10)
+        .attr("dy", ".35em")
+        .style("text-anchor", "start")
+        .style("font-size", "14px")
+        .text(d => d);
+
     // Function to draw the chart with the given data
     function drawChart(data) {
         // Determine the minimum and maximum fees to create a balanced x-axis
@@ -82,20 +113,14 @@ d3.csv(csvUrl).then(data => {
             .domain([-maxAbsFee * 1.1, maxAbsFee * 1.1])
             .range([0, width]);
 
-        // Define a color scale for the bars
-        const color = d3.scaleOrdinal()
-            .domain(data.map(d => d.country))
-            .range(d3.schemeCategory10.slice(0, data.length));
-
         // Add the X axis
         xAxisGroup.call(d3.axisBottom(x).ticks(10).tickFormat(d => `${d}`))
             .selectAll("text")
             .style("font-size", "12px");
 
-        // Remove any existing bars, texts, and legends before drawing new ones
+        // Remove any existing bars and labels before drawing new ones
         svg.selectAll(".bar").remove();
         svg.selectAll(".bar-label").remove();
-        svg.selectAll(".legend").remove();
         svg.selectAll(".x-axis-label").remove();
 
         // Add the bars
@@ -112,7 +137,7 @@ d3.csv(csvUrl).then(data => {
             .attr("stroke", "black")
             .attr("stroke-width", "2px");
 
-        // Add the values as labels on the bars
+        // Add the values as labels on the bars, formatted to 2 decimal places
         svg.selectAll(".bar-label")
             .data(data)
             .enter()
@@ -133,7 +158,7 @@ d3.csv(csvUrl).then(data => {
                 return barWidth < 40 ? "black" : "white";
             })
             .style("font-size", "14px")
-            .text(d => `${d.fee}M`);
+            .text(d => `${d.fee.toFixed(2)}M`);
 
         // Add X-axis label
         svg.append("text")
@@ -143,29 +168,6 @@ d3.csv(csvUrl).then(data => {
             .style("font-size", "14px")
             .attr("class", "x-axis-label")
             .text("Fee, mln EUR");
-
-        // Add a legend
-        const legend = svg.selectAll(".legend")
-            .data(data)
-            .enter()
-            .append("g")
-            .attr("class", "legend")
-            .attr("transform", (d, i) => `translate(0,${i * 30})`);
-
-        legend.append("rect")
-            .attr("x", width + 20)
-            .attr("width", 20)
-            .attr("height", 20)
-            .style("fill", d => color(d.country))
-            .style("stroke", "black");
-
-        legend.append("text")
-            .attr("x", width + 50)
-            .attr("y", 10)
-            .attr("dy", ".35em")
-            .style("text-anchor", "start")
-            .style("font-size", "14px")
-            .text(d => d.country);
 
         // Add pan and zoom functionality
         svg.call(d3.zoom()
