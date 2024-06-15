@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .attr("text-anchor", "middle")
         .style("font-size", "24px")
         .attr("class", "title")
-        .text("Transfer Balance Between Countries");
+        .text("Transfer Fee Between Countries");
 
     // Create a group for the x-axis to be able to move it
     const xAxisGroup = svg.append("g")
@@ -57,6 +57,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const barsGroup = svg.append("g")
         .attr("class", "bars-group")
         .attr("clip-path", "url(#clip)");
+
+    // Tooltip div
+    const tooltip = d3.select("#tooltip");
 
   // Load and process data based on selected year
   function loadDataAndDrawChart(year) {
@@ -91,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Combine all datasets into an array for easy access
         const datasets = [countryToData, countryFromData, transferBalanceData];
+        const datasetLabels = ["Spend", "Income", "Net Spend"]; // Labels for the tooltips
 
         // Define a color scale for the bars
         const color = d3.scaleOrdinal()
@@ -124,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .text(d => d);
 
         // Function to draw the chart with the given data
-        function drawChart(data) {
+        function drawChart(data, label) {
             // Determine the minimum and maximum fees to create a balanced x-axis
             const minFee = d3.min(data, d => d.fee);
             const maxFee = d3.max(data, d => d.fee);
@@ -156,6 +160,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 .attr("x", d => x(Math.min(0, d.fee)))
                 .attr("width", d => Math.abs(x(d.fee) - x(0)))
                 .attr("fill", d => color(d.country))
+                .on("mouseover", function (event, d) {
+                    // Show tooltip on mouseover
+                    tooltip.style("display", "block")
+                        .html(`<strong>Country:</strong> ${d.country}<br><strong>Balance:</strong> ${label}<br><strong>Fee:</strong> ${d.fee.toFixed(2)}`)
+                        .style("left", `${event.pageX + 10}px`)
+                        .style("top", `${event.pageY - 20}px`);
+                })
+                .on("mousemove", function (event) {
+                    // Move tooltip with cursor
+                    tooltip.style("left", `${event.pageX + 10}px`)
+                        .style("top", `${event.pageY - 20}px`);
+                })
+                .on("mouseout", function () {
+                    // Hide tooltip on mouseout
+                    tooltip.style("display", "none");
+                })
                 .attr("stroke", "black")
                 .attr("stroke-width", "2px");
 
@@ -169,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 .attr("dy", ".35em")
                 .attr("x", d => {
                     const barWidth = Math.abs(x(d.fee) - x(0));
-                    const textWidth = getTextWidth(`${d.fee.toFixed(2)}M`, "14px Arial");
+                    const textWidth = getTextWidth(`${d.fee.toFixed(2)}`, "14px Arial");
                     if (barWidth > textWidth + 10) { // 10 is the padding
                         return d.fee < 0 ? x(d.fee) + 5 : x(0) + barWidth - 5;
                     } else {
@@ -178,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
                 .attr("text-anchor", d => {
                     const barWidth = Math.abs(x(d.fee) - x(0));
-                    const textWidth = getTextWidth(`${d.fee.toFixed(2)}M`, "14px Arial");
+                    const textWidth = getTextWidth(`${d.fee.toFixed(2)}`, "14px Arial");
                     if (barWidth > textWidth + 10) {
                         return d.fee < 0 ? "start" : "end";
                     } else {
@@ -187,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
                 .style("fill", d => {
                     const barWidth = Math.abs(x(d.fee) - x(0));
-                    const textWidth = getTextWidth(`${d.fee.toFixed(2)}M`, "14px Arial");
+                    const textWidth = getTextWidth(`${d.fee.toFixed(2)}`, "14px Arial");
                     if (barWidth > textWidth + 10) {
                         return "white";
                     } else {
@@ -195,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 })
                 .style("font-size", "14px")
-                .text(d => `${d.fee.toFixed(2)}M`);
+                .text(d => `${d.fee.toFixed(2)}`);
 
             // Add X-axis label
             svg.append("text")
@@ -226,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     barsGroup.selectAll(".bar-label")
                         .attr("x", d => {
                             const barWidth = Math.abs(new_xScale(d.fee) - new_xScale(0));
-                            const textWidth = getTextWidth(`${d.fee.toFixed(2)}M`, "14px Arial");
+                            const textWidth = getTextWidth(`${d.fee.toFixed(2)}`, "14px Arial");
                             if (barWidth > textWidth + 10) {
                                 return d.fee < 0 ? new_xScale(d.fee) + 5 : new_xScale(0) + barWidth - 5;
                             } else {
@@ -235,7 +255,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         })
                         .attr("text-anchor", d => {
                             const barWidth = Math.abs(new_xScale(d.fee) - new_xScale(0));
-                            const textWidth = getTextWidth(`${d.fee.toFixed(2)}M`, "14px Arial");
+                            const textWidth = getTextWidth(`${d.fee.toFixed(2)}`, "14px Arial");
                             if (barWidth > textWidth + 10) {
                                 return d.fee < 0 ? "start" : "end";
                             } else {
@@ -244,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         })
                         .style("fill", d => {
                             const barWidth = Math.abs(new_xScale(d.fee) - new_xScale(0));
-                            const textWidth = getTextWidth(`${d.fee.toFixed(2)}M`, "14px Arial");
+                            const textWidth = getTextWidth(`${d.fee.toFixed(2)}`, "14px Arial");
                             if (barWidth > textWidth + 10) {
                                 return "white";
                             } else {
@@ -260,17 +280,16 @@ document.addEventListener('DOMContentLoaded', function () {
         // Event listener for slider input
         d3.select("#chartSlider").on("input", function() {
             const datasetIndex = this.value - 1;
-            drawChart(datasets[datasetIndex]);
+            drawChart(datasets[datasetIndex], datasetLabels[datasetIndex]);
             updateSliderLabel(datasetIndex);
         });
 
         // Initial drawing of the chart with the first dataset
-        drawChart(datasets[0]);
+        drawChart(datasets[0], datasetLabels[0]);
 
         // Function to update the slider label and active class on span elements
         function updateSliderLabel(datasetIndex) {
-            const labels = ["Spend", "Income", "Net Spend"];
-            document.getElementById("sliderLabel").textContent = `Balance = ${labels[datasetIndex]}`;
+            document.getElementById("sliderLabel").textContent = `Balance = ${datasetLabels[datasetIndex]}`;
             document.querySelectorAll('.slider-labels span').forEach((el, i) => {
                 if (i === datasetIndex) {
                     el.classList.add('active');
@@ -284,7 +303,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.slider-labels span').forEach((el, i) => {
             el.addEventListener('click', function() {
                 document.getElementById("chartSlider").value = i + 1;
-                drawChart(datasets[i]);
+                drawChart(datasets[i], datasetLabels[i]);
                 updateSliderLabel(i);
             });
         });
@@ -296,6 +315,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // Event listener for dropdown menu selection to load and draw the appropriate data
     d3.select("#chartSelect").on("change", function() {
         const selectedYear = this.value;
+
+        // Reset the slider to the first position (value 1)
+        document.getElementById("chartSlider").value = 1;
+
         loadDataAndDrawChart(selectedYear);
     });
 

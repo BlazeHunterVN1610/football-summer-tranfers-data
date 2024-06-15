@@ -46,6 +46,18 @@
             font-weight: bold;
             color: red;
         }
+        /* Tooltip styling */
+        .tooltip {
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 5px;
+            font-size: 12px;
+            border-radius: 3px;
+            pointer-events: none;
+            box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.2);
+            display: none;
+        }        
     </style>
 </head>
 <body>
@@ -72,7 +84,8 @@
             <span id="labelNetSpend">Net Spend</span>
         </div>
     </div>
-
+    <!-- Tooltip container -->
+    <div class="tooltip" id="tooltip"></div>
     <!-- Include D3.js from a CDN -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script type="text/javascript" src="barchart.js"></script>
