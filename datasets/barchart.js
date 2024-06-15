@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 .attr("text-anchor", "middle")
                 .attr("class", "x-axis-label")
                 .style("font-size", "18px")
-                .text("Transfer Balance (Million Euros)");
+                .text("Transfer Fee (Million Euros)");
 
             // Set up the zoom functionality
             const zoom = d3.zoom()
