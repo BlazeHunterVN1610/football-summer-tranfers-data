@@ -147,15 +147,30 @@ d3.csv(csvUrl).then(data => {
             .attr("dy", ".35em")
             .attr("x", d => {
                 const barWidth = Math.abs(x(d.fee) - x(0));
-                return x(d.fee) < x(0) ? x(d.fee) - 5 : x(0) + barWidth + 5;
+                const textWidth = getTextWidth(`${d.fee.toFixed(2)}M`, "14px Arial");
+                if (barWidth > textWidth + 10) { // 10 is the padding
+                    return d.fee < 0 ? x(d.fee) + 5 : x(0) + barWidth - 5;
+                } else {
+                    return d.fee < 0 ? x(d.fee) - 5 : x(0) + barWidth + 5;
+                }
             })
             .attr("text-anchor", d => {
                 const barWidth = Math.abs(x(d.fee) - x(0));
-                return barWidth < 40 ? (x(d.fee) < x(0) ? "end" : "start") : "middle";
+                const textWidth = getTextWidth(`${d.fee.toFixed(2)}M`, "14px Arial");
+                if (barWidth > textWidth + 10) {
+                    return d.fee < 0 ? "start" : "end";
+                } else {
+                    return d.fee < 0 ? "end" : "start";
+                }
             })
             .style("fill", d => {
                 const barWidth = Math.abs(x(d.fee) - x(0));
-                return barWidth < 40 ? "black" : "white";
+                const textWidth = getTextWidth(`${d.fee.toFixed(2)}M`, "14px Arial");
+                if (barWidth > textWidth + 10) {
+                    return "white";
+                } else {
+                    return "black";
+                }
             })
             .style("font-size", "14px")
             .text(d => `${d.fee.toFixed(2)}M`);
@@ -187,53 +202,74 @@ d3.csv(csvUrl).then(data => {
                 svg.selectAll(".bar-label")
                     .attr("x", d => {
                         const barWidth = Math.abs(new_xScale(d.fee) - new_xScale(0));
-                        return new_xScale(d.fee) < new_xScale(0) ? new_xScale(d.fee) - 5 : new_xScale(0) + barWidth + 5;
+                        const textWidth = getTextWidth(`${d.fee.toFixed(2)}M`, "14px Arial");
+                        if (barWidth > textWidth + 10) {
+                            return d.fee < 0 ? new_xScale(d.fee) + 5 : new_xScale(0) + barWidth - 5;
+                        } else {
+                            return d.fee < 0 ? new_xScale(d.fee) - 5 : new_xScale(0) + barWidth + 5;
+                        }
                     })
                     .attr("text-anchor", d => {
                         const barWidth = Math.abs(new_xScale(d.fee) - new_xScale(0));
-                        return barWidth < 40 ? (new_xScale(d.fee) < new_xScale(0) ? "end" : "start") : "middle";
+                        const textWidth = getTextWidth(`${d.fee.toFixed(2)}M`, "14px Arial");
+                        if (barWidth > textWidth + 10) {
+                            return d.fee < 0 ? "start" : "end";
+                        } else {
+                            return d.fee < 0 ? "end" : "start";
+                        }
                     })
                     .style("fill", d => {
                         const barWidth = Math.abs(new_xScale(d.fee) - new_xScale(0));
-                        return barWidth < 40 ? "black" : "white";
+                        const textWidth = getTextWidth(`${d.fee.toFixed(2)}M`, "14px Arial");
+                        if (barWidth > textWidth + 10) {
+                            return "white";
+                        } else {
+                            return "black";
+                        }
                     });
             }));
     }
 
-    // Initial chart drawing
+    // Event listener for slider input
+    d3.select("#chartSlider").on("input", function() {
+        const datasetIndex = this.value - 1;
+        drawChart(datasets[datasetIndex]);
+        updateSliderLabel(datasetIndex);
+    });
+
+    // Initial drawing of the chart with the first dataset
     drawChart(datasets[0]);
 
-    // Slider to switch between charts
-    document.getElementById("chartSlider").addEventListener("input", function() {
-        const index = +this.value - 1;
-        const sliderValues = ["Spend", "Income", "Net Spend"];
-        drawChart(datasets[index]);
-        document.getElementById("sliderLabel").textContent = `Balance = ${sliderValues[index]}`;
-
-        // Highlight the selected label
-        document.querySelectorAll(".slider-labels span").forEach((el, idx) => {
-            if (idx === index) {
-                el.classList.add("active");
+    // Function to update the slider label and active class on span elements
+    function updateSliderLabel(datasetIndex) {
+        const labels = ["Spend", "Income", "Net Spend"];
+        document.getElementById("sliderLabel").textContent = `Balance = ${labels[datasetIndex]}`;
+        document.querySelectorAll('.slider-labels span').forEach((el, i) => {
+            if (i === datasetIndex) {
+                el.classList.add('active');
             } else {
-                el.classList.remove("active");
+                el.classList.remove('active');
             }
+        });
+    }
+
+    // Click event listener for slider labels
+    document.querySelectorAll('.slider-labels span').forEach((el, i) => {
+        el.addEventListener('click', function() {
+            document.getElementById("chartSlider").value = i + 1;
+            drawChart(datasets[i]);
+            updateSliderLabel(i);
         });
     });
 
-    // Initial highlight for the slider labels
-    document.getElementById("labelSpend").classList.add("active");
-
-    // Add event listeners to slider labels for quick selection
-    document.getElementById("labelSpend").addEventListener("click", () => {
-        document.getElementById("chartSlider").value = 1;
-        document.getElementById("chartSlider").dispatchEvent(new Event('input'));
-    });
-    document.getElementById("labelIncome").addEventListener("click", () => {
-        document.getElementById("chartSlider").value = 2;
-        document.getElementById("chartSlider").dispatchEvent(new Event('input'));
-    });
-    document.getElementById("labelNetSpend").addEventListener("click", () => {
-        document.getElementById("chartSlider").value = 3;
-        document.getElementById("chartSlider").dispatchEvent(new Event('input'));
-    });
+    // Update the slider label initially
+    updateSliderLabel(0);
 });
+
+// Helper function to measure text width
+function getTextWidth(text, font) {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    context.font = font;
+    return context.measureText(text).width;
+}
