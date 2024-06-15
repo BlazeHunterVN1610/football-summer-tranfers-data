@@ -50,6 +50,15 @@
     </style>
 </head>
 <body>
+    <!-- Dropdown for chart selection -->
+    <div>
+        <label for="chartSelect">Select Chart Set:</label>
+        <select id="chartSelect">
+            <option value="2021">2021 Transfers</option>
+            <option value="2022">2022 Transfers</option>
+            <!-- Add more options as needed -->
+        </select>
+    </div>    
     <div class="chart-container">
         <svg id="barChart" width="1400" height="700"></svg>
     </div>
