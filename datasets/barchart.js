@@ -38,6 +38,18 @@ const xAxisGroup = svg.append("g")
     .attr("class", "x-axis")
     .attr("transform", `translate(0,${height})`);
 
+// Define the clip path
+svg.append("clipPath")
+    .attr("id", "clip")
+    .append("rect")
+    .attr("width", width)
+    .attr("height", height);
+
+// Group for bars to apply the clip path
+const barsGroup = svg.append("g")
+    .attr("class", "bars-group")
+    .attr("clip-path", "url(#clip)");
+
 // Load and process data
 d3.csv(csvUrl).then(data => {
     // Convert the Transfer fee to numeric
@@ -119,12 +131,12 @@ d3.csv(csvUrl).then(data => {
             .style("font-size", "12px");
 
         // Remove any existing bars and labels before drawing new ones
-        svg.selectAll(".bar").remove();
-        svg.selectAll(".bar-label").remove();
+        barsGroup.selectAll(".bar").remove();
+        barsGroup.selectAll(".bar-label").remove();
         svg.selectAll(".x-axis-label").remove();
 
         // Add the bars
-        svg.selectAll(".bar")
+        barsGroup.selectAll(".bar")
             .data(data)
             .enter()
             .append("rect")
@@ -138,7 +150,7 @@ d3.csv(csvUrl).then(data => {
             .attr("stroke-width", "2px");
 
         // Add the values as labels on the bars, formatted to 2 decimal places
-        svg.selectAll(".bar-label")
+        barsGroup.selectAll(".bar-label")
             .data(data)
             .enter()
             .append("text")
@@ -180,26 +192,28 @@ d3.csv(csvUrl).then(data => {
             .attr("x", width / 2)
             .attr("y", height + margin.bottom - 10)
             .attr("text-anchor", "middle")
-            .style("font-size", "14px")
             .attr("class", "x-axis-label")
-            .text("Fee, mln EUR");
+            .style("font-size", "18px")
+            .text("Transfer Balance (Million Euros)");
 
-        // Add pan and zoom functionality
-        svg.call(d3.zoom()
-            .scaleExtent([1, 5])
-            .translateExtent([[-width, -Infinity], [2 * width, Infinity]])
+        // Set up the zoom functionality
+        const zoom = d3.zoom()
+            .scaleExtent([0.5, 5])  // Define the zoom scale range
+            .translateExtent([[-width, -height], [2 * width, 2 * height]]) // Define the pan extent
             .on("zoom", (event) => {
-                const transform = event.transform;
-                const new_xScale = transform.rescaleX(x);
+                // Update the x-scale based on zoom
+                const new_xScale = event.transform.rescaleX(x);
+
+                // Update the x-axis with the new scale
                 xAxisGroup.call(d3.axisBottom(new_xScale).ticks(10).tickFormat(d => `${d}`));
 
                 // Adjust the bars based on the new scale
-                svg.selectAll(".bar")
+                barsGroup.selectAll(".bar")
                     .attr("x", d => new_xScale(Math.min(0, d.fee)))
                     .attr("width", d => Math.abs(new_xScale(d.fee) - new_xScale(0)));
 
                 // Adjust the labels based on the new scale
-                svg.selectAll(".bar-label")
+                barsGroup.selectAll(".bar-label")
                     .attr("x", d => {
                         const barWidth = Math.abs(new_xScale(d.fee) - new_xScale(0));
                         const textWidth = getTextWidth(`${d.fee.toFixed(2)}M`, "14px Arial");
@@ -227,7 +241,10 @@ d3.csv(csvUrl).then(data => {
                             return "black";
                         }
                     });
-            }));
+            });
+
+        // Apply zoom to the svg
+        svg.call(zoom);
     }
 
     // Event listener for slider input
