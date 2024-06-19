@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Transfer Fees Pie Chart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .chart-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 50px;
+        }
+        .tooltip {
+            position: absolute;
+            text-align: center;
+            width: 160px;
+            padding: 10px;
+            background: lightsteelblue;
+            border: 0px;
+            border-radius: 8px;
+            pointer-events: none;
+            opacity: 0;
+        }
+        .center-label {
+            font-size: 24px;
+            font-weight: bold;
+            text-anchor: middle;
+            fill: #333;
+        }
+    </style>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <div>
+        <label for="dataset-selector">Choose a dataset:</label>
+        <select id="dataset-selector">
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
+        </select>
+    </div>
+    <div class="chart-container">
+        <div id="chartFrom"></div>
+        <div id="chartTo"></div>
+    </div>
+    <div class="tooltip" id="tooltip"></div>
+    <script type="text/javascript" src="donutchart.js"></script>
+</body>
+</html>
