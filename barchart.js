@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const selectedCountries = ['England', 'Spain', 'Germany', 'France', 'Italy', 'Netherlands', 'Portugal'];
 
     // Set dimensions and margins for the chart
-    const margin = { top: 50, right: 150, bottom: 100, left: 150 };
-    const width = 1400 - margin.left - margin.right;
+    const margin = { top: 40, right: 120, bottom: 60, left: 80  };
+    const width = 800 - margin.left - margin.right;
     const height = 600 - margin.top - margin.bottom;
 
     // Append SVG element to the chart container

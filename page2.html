@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>INFORMATION</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body {font-family: "Lato", sans-serif}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="w3-top">
+  <div class="w3-bar w3-cyan w3-card ">
+    <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+    <a href="#" class="w3-bar-item w3-button w3-padding-large w3-quarter">HOME</a>
+    <a href="#introduction" class="w3-bar-item w3-button w3-padding-large w3-hide-small w3-quarter">INTRODUCTION</a>
+    <a href="#diagrams" class="w3-bar-item w3-button w3-padding-large w3-hide-small w3-quarter">DIAGRAMS</a>
+    <a href="#conclusion" class="w3-bar-item w3-button w3-padding-large w3-hide-small w3-quarter">CONCLUSION</a>
+    
+  </div>
+</div>
+
+<!-- Navbar on small screens -->
+<div id="navDemo" class="w3-bar-block w3-cyan w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
+  <a href="#introduction" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">INTRODUCTION</a>
+  <a href="#digrams" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">DIAGRAMS</a>
+  <a href="#conclusion" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">/CONCLUSION</a>
+</div>
+
+<!-- Page content -->
+<div class="w3-content w3-sand" style="max-width:2000px;margin-top:46px">
+
+  <!-- Image and Centered Text -->
+  <div class="w3-display-container w3-center" style="height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+    <img src="background.jpg" style="width:90%; height: 70%;">
+    <div class="w3-display-middle w3-container w3-text-white w3-padding-32" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+      <h3 style="font-size: 6cap; font-weight: bold; white-space: nowrap; font-family: 'Lato', sans-serif;">TRANSFER DATA</h3>
+      <p style="font-size: 2em; font-family: 'Lato', sans-serif;"><b>Data Science and Data Visualization </b></p>   
+    </div>
+</div>
+
+  <!-- Introduction Section -->
+  <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px" id="introduction">
+    <h2 class="w3-wide">INTRODUCTION</h2>
+    <p class="w3-justify">We have created a website as a dashboard to show the data in summer football transfer in two year (2021,2022).This website contains many diagrams to show the data visualization which the purpose to achieve the overview of each summer data tranfers .</p>
+    <div class="w3-row w3-padding-32">
+      <div class="w3-half">
+        <p>Top 5 Players in 2021</p>
+        <img src="table2021.jpg" class="w3-round w3-margin-bottom" alt="Fertility Rate" style="width:80%">
+      </div>
+      <div class="w3-half">
+        <p>Top 5 Players in 2022</p>
+        <img src="table2022.jpg" class="w3-round" alt="Age Structure" style="width:80%">
+      </div>
+    </div>
+  </div>
+
+  <!-- The graphs Section -->
+
+  <div class="w3-pink" id="diagrams">
+    <div class="w3-container w3-content w3-padding-64" style="max-width:600px" >
+      <h2 class="w3-wide w3-center">DIAGRAMS</h2>
+      <p class="w3-opacity w3-center"><i>These Diagrams show the transfer data </i></p><br>
+
+      <div class="w3-row-padding w3-padding-32" style="margin:0 -160px">
+        <div class="w3-quarter w3-margin-bottom">
+          <div class="w3-container w3-white">
+            <p><b>Transfer Balance Between Countries</b></p>
+            <p></p>
+            <a href="barchart.html" class="w3-button w3-black w3-margin-bottom">View</a> <!--Link to another html-->
+          </div>
+        </div>
+        <div class="w3-quarter w3-margin-bottom">
+          <div class="w3-container w3-white">
+            <p><b>Comparing Fees Between Countries</b></p>
+            <p></p>
+            <a href="piechart.html" class="w3-button w3-black w3-margin-bottom">View</a>  <!--Link to another html-->
+          </div>
+        </div>
+        <div class="w3-quarter w3-margin-bottom">
+          <div class="w3-container w3-white">
+            <p><b>Popular Tranfers In Position</b></p>
+            <p></p>
+            <a href="boxplot.html" class="w3-button w3-black w3-margin-bottom">View</a>  <!--Link to another html-->
+          </div>
+        </div>
+        <div class="w3-quarter w3-margin-bottom">
+            <div class="w3-container w3-white">
+              <p><b>Popular Transfers Country</b></p>
+              <p></p>
+              <a href="heatmap.html" class="w3-button w3-black w3-margin-bottom">View</a> <!--Link to another html-->
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- The Conclusion Section -->
+  <div class="w3-container w3-content w3-padding-64" style="max-width:800px" id="conclusion">
+    <h2 class="w3-wide w3-center">Conclusion</h2>
+    <div>
+      <div class="w3-justify">
+        <p> In conclusion, after anlysing throught project, we can see that the transfer data is very important for the football clubs. It helps them to find the siutable players for each club by having a overview on the data viusalation.We can see that England is the country that spend too much money for transfer through 2 years and Netherland, Portugal have most income from selling players.
+        </p>
+      </div>
+    </div>
+  </div>
+  
+<!-- End Page Content -->
+</div>
+
+<script>
+// Used to toggle the menu on small screens when clicking on the menu button
+function myFunction() {
+  var x = document.getElementById("navDemo");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+  } else { 
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+</script>
+
+</body>
+</html>
