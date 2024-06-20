@@ -1,7 +1,7 @@
 // Create SVG dimensions
 const margin = { top: 50, right: 50, bottom: 150, left: 100 };
-const width = 1200 - margin.left - margin.right;
-const height = 1000 - margin.top - margin.bottom;
+const width = 1000 - margin.left - margin.right;
+const height = 800 - margin.top - margin.bottom;
 
 // Create SVG
 const svg = d3.select("#heatmap")

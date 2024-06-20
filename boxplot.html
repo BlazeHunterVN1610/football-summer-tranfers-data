@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Box Plot with Slider using D3.js</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
         .box {
@@ -86,6 +87,7 @@
     </style>
 </head>
 <body>
+  
     <div>
         <label for="boxplot-select">Year selection:</label>
         <select id="boxplot-select">
@@ -104,8 +106,21 @@
         </div>
         <p id="position-text"></p>
     </div>
+   </div>
+  
     <svg id="boxplot-svg" width="960" height="500"></svg>
     <div id="tooltip"></div>
     <script src="boxplot.js"></script>
+    <div class="w3-container w3-content w3-padding-32 w3-cyan" style="max-width:800px">
+        <div>
+            <div class="w3-justify">
+                <p>Users can compare transfer fees distribution across countries for player positions, gaining insights into positional differences and observing year-on-year changes in transfer fees.</p>
+        </div>
+    </div>
+    
+    <!-- Back Button -->
+    <div class="w3-center w3-padding-32">
+        <a href="page2.html" class="w3-button w3-black w3-margin-bottom">Back to Main</a>
+    </div>
 </body>
 </html>

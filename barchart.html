@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transfer Balance Between Countries</title>
     <style>
@@ -28,7 +29,7 @@
         .slider-container {
             text-align: center;
             margin-top: 20px;
-            width: 100%;
+            width: 700px;
         }
         #chartSlider {
             width: 60%;
@@ -61,20 +62,21 @@
     </style>
 </head>
 <body>
-    <!-- Dropdown for chart selection -->
-    <div>
+    
+    
+        <div>
         <label for="chartSelect">Select Year:</label>
         <select id="chartSelect">
             <option value="2021">2021</option>
             <option value="2022">2022</option>
             <!-- Add more options as needed -->
         </select>
-    </div>    
-    <div class="chart-container">
+         </div>    
+      <div class="chart-container">
         <svg id="barChart" width="700" height="350"></svg>
-    </div>
+      </div>
 
-    <div class="slider-container">
+      <div class="slider-container">
         <label for="chartSlider" id="sliderLabel">Balance = Spend</label>
         <br>
         <input type="range" id="chartSlider" min="1" max="3" value="1" step="1">
@@ -83,7 +85,20 @@
             <span id="labelIncome">Income</span>
             <span id="labelNetSpend">Net Spend</span>
         </div>
+       </div>
+       <div class="w3-container w3-content w3-padding-32 w3-cyan" style="max-width:800px">
+        <div>
+            <div class="w3-justify">
+                <p>This chart displays the net transfer fees for football clubs across various countries in 2022, highlighting how much each country spent versus earned on player transfers. It shows which countries, like England, have significantly higher spending compared to others, making them net spenders, while some countries earn more than they spend. Overall, it visualizes financial trends in the football transfer market, providing a quick snapshot of each country's economic activity in player acquisitions and sales</p>
+            </div>
+        </div>
     </div>
+    
+    <!-- Back Button -->
+    <div class="w3-center w3-padding-32">
+        <a href="page2.html " class="w3-button w3-black w3-margin-bottom">Back to Main</a>
+    </div>
+    
     <!-- Tooltip container -->
     <div class="tooltip" id="tooltip"></div>
     <!-- Include D3.js from a CDN -->
