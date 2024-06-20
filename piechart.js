@@ -42,8 +42,8 @@ function drawCountryToChart(data) {
     const totalIncomeInBillions = totalIncome / 1000;
 
     // Preparing the pie chart dimensions and colors
-    const width = 400; /* Reduced width */
-    const height = 400; /* Reduced height */
+    const width = 650; /* Reduced width */
+    const height = 650; /* Reduced height */
     const margin = 20;  /* Reduced margin */
     const radius = Math.min(width, height) / 2 - margin;
     const innerRadius = radius * 0.5; // Inner radius for the hollow effect
@@ -187,8 +187,8 @@ function drawCountryFromChart(data) {
     const totalSpendInBillions = totalSpend / 1000;
 
     // Preparing the pie chart dimensions and colors
-    const width = 400; /* Reduced width */
-    const height = 400; /* Reduced height */
+    const width = 650; /* Reduced width */
+    const height = 650; /* Reduced height */
     const margin = 20;  /* Reduced margin */
     const radius = Math.min(width, height) / 2 - margin;
     const innerRadius = radius * 0.5; // Inner radius for the hollow effect
